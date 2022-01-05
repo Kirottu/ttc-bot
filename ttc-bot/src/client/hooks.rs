@@ -1,5 +1,6 @@
 use std::collections::HashSet;
 
+use ttc_bot_common::embed_msg;
 use serenity::{
     client::Context,
     framework::standard::{
@@ -11,7 +12,6 @@ use serenity::{
     utils::Color,
 };
 
-use crate::utils::helper_functions::embed_msg;
 
 // -----
 // Hooks

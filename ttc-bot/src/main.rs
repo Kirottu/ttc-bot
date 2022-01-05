@@ -6,16 +6,6 @@ mod typemap {
     pub mod config;
     pub mod types;
 }
-mod groups {
-    pub mod admin;
-    pub mod config;
-    pub mod general;
-    pub mod moderation;
-    pub mod support;
-}
-mod utils {
-    pub mod helper_functions;
-}
 mod logging {
     pub mod conveyance;
 }
@@ -33,16 +23,12 @@ use regex::Regex;
 use serde_yaml::Value;
 use serenity::{
     client::{bridge::gateway::GatewayIntents, Client},
-    framework::standard::StandardFramework,
+    framework::standard::{StandardFramework, CommandGroup},
     model::id::UserId,
 };
 use sqlx::postgres::PgPoolOptions;
-use std::{collections::HashSet, fs::File};
+use std::{collections::HashSet, fs::File, boxed::Box};
 use typemap::types::*;
-
-// ------------
-// Help message
-// ------------
 
 // ---------------------------------
 // Initialization code & Entry point
@@ -120,17 +106,30 @@ async fn main() {
     }
 
     // Create the framework of the bot
-    let framework = StandardFramework::new()
+    let mut framework = StandardFramework::new()
         .configure(|c| c.prefix("ttc!").owners(owners))
         .help(&client::hooks::HELP)
         .unrecognised_command(client::hooks::unknown_command)
         .on_dispatch_error(client::hooks::dispatch_error)
-        .after(client::hooks::after)
-        .group(&groups::general::GENERAL_GROUP)
-        .group(&groups::support::SUPPORT_GROUP)
-        .group(&groups::admin::ADMIN_GROUP)
-        .group(&groups::config::CONFIG_GROUP)
-        .group(&groups::moderation::MODERATION_GROUP);
+        .after(client::hooks::after);
+    
+    let libs: &mut Vec<libloading::Library> = Box::leak(Box::new(Vec::new()));
+    let groups: &mut Vec<&CommandGroup> = Box::leak(Box::new(Vec::new()));
+
+    for path in std::fs::read_dir("groups").unwrap() {
+        let path = path.unwrap();
+        unsafe {
+            let lib = libloading::Library::new(path.path()).unwrap();
+            let func: libloading::Symbol<unsafe extern fn() -> &'static CommandGroup> = lib.get(b"get_group").unwrap();
+            let symbol = func();
+            libs.push(lib);
+            groups.push(symbol);
+        }
+    }
+
+    for i in 0..groups.len() {
+        framework.group_add(&*groups[i]);
+    }
 
     // Create the bot client
     let mut client = Client::builder(token)

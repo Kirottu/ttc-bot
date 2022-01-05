@@ -7,6 +7,7 @@ use crate::{
     },
     utils::helper_functions::*,
 };
+
 use chrono::{DateTime, Utc};
 use serenity::{
     client::Context,
@@ -825,4 +826,32 @@ pub async fn thread_update(ctx: &Context, thread: &GuildChannel) {
             }
         }
     }
+}
+
+// -------------------------------
+// Helper functions for this group
+// -------------------------------
+
+// Function to send a message with info of a ticket
+pub async fn support_ticket_msg(
+    ctx: &Context,
+    channel_id: &ChannelId,
+    thread: &SupportThread,
+) -> CommandResult {
+    channel_id
+        .send_message(ctx, |m| {
+            m.embed(|e| {
+                e.title(format!("Support ticket [{}]", thread.incident_id))
+                    .field("Title:", thread.incident_title.clone(), false)
+                    .field(
+                        "Status:",
+                        format!("Solved: {}", thread.incident_solved,),
+                        false,
+                    )
+                    .field("Timestamp:", thread.incident_time, false)
+                    .field("Thread:", format!("<#{}>", thread.thread_id), false)
+            })
+        })
+        .await?;
+    Ok(())
 }

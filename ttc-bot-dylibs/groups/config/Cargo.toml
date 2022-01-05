@@ -1,0 +1,15 @@
+[package]
+name = "config"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "config"
+crate-type = ["dylib"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serenity = { path = "../../../serenity" }
+sqlx = { version = "0.5.9", features = ["runtime-tokio-rustls", "postgres", "chrono", "macros"] }
+log = { version = "0.4.14", features = ["std"] }

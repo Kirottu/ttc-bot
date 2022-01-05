@@ -2,10 +2,15 @@ use serenity::{
     client::Context,
     framework::standard::{
         macros::{command, group},
-        CommandResult,
+        CommandGroup, CommandResult,
     },
     model::channel::Message,
 };
+
+#[no_mangle]
+pub fn get_group() -> &'static CommandGroup {
+    return &GENERAL_GROUP;
+}
 
 #[group]
 #[commands(ping)]

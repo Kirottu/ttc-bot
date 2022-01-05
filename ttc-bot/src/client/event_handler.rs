@@ -1,4 +1,4 @@
-use crate::{groups, logging};
+use crate::{logging};
 use serenity::{
     async_trait,
     client::{Context, EventHandler},
@@ -39,7 +39,7 @@ impl EventHandler for Handler {
 
     // Update thread status on the database when it is updated
     async fn thread_update(&self, ctx: Context, thread: GuildChannel) {
-        groups::support::thread_update(&ctx, &thread).await;
+        //groups::support::thread_update(&ctx, &thread).await;
     }
 
     // For conveyance

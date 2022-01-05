@@ -1,4 +1,3 @@
-use crate::{groups::support::SupportThread, UsersCurrentlyQuestionedType};
 use serenity::{
     builder::{CreateEmbed, CreateMessage},
     client::Context,
@@ -7,10 +6,6 @@ use serenity::{
     utils::Color,
 };
 use std::{sync::Arc, time::Duration};
-
-// ----------------
-// Helper functions
-// ----------------
 
 // Helper function for fast and easy embed messages
 pub async fn embed_msg(
@@ -86,30 +81,6 @@ pub async fn wait_for_message(
     Ok(message)
 }
 
-// Function to send a message with info of a ticket
-pub async fn support_ticket_msg(
-    ctx: &Context,
-    channel_id: &ChannelId,
-    thread: &SupportThread,
-) -> CommandResult {
-    channel_id
-        .send_message(ctx, |m| {
-            m.embed(|e| {
-                e.title(format!("Support ticket [{}]", thread.incident_id))
-                    .field("Title:", thread.incident_title.clone(), false)
-                    .field(
-                        "Status:",
-                        format!("Solved: {}", thread.incident_solved,),
-                        false,
-                    )
-                    .field("Timestamp:", thread.incident_time, false)
-                    .field("Thread:", format!("<#{}>", thread.thread_id), false)
-            })
-        })
-        .await?;
-    Ok(())
-}
-
 // Helper function for asking for user input after a message from the bot
 pub async fn get_message_reply<'a, F>(
     ctx: &Context,
@@ -129,10 +100,6 @@ where
         let new_msg = match wait_for_message(ctx, msg, timeout).await {
             Ok(msg) => msg,
             Err(why) => {
-                let mut data = ctx.data.write().await;
-                data.get_mut::<UsersCurrentlyQuestionedType>()
-                    .unwrap()
-                    .retain(|uid| uid != &msg.author.id);
                 return Err(CommandError::from(format!(
                     "User took too long to respond: {}",
                     why
