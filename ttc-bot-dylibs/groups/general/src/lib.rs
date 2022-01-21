@@ -6,9 +6,15 @@ use serenity::{
     },
     model::channel::Message,
 };
+use tokio_global::{AutoRuntime, Runtime};
 
 #[no_mangle]
-pub fn get_group() -> &'static CommandGroup {
+pub fn setup() -> &'static CommandGroup {
+    let _guard = Runtime::default();
+    let runner = std::thread::spawn(|| {
+        Runtime::run();
+    });
+
     return &GENERAL_GROUP;
 }
 

@@ -29,6 +29,7 @@ use serenity::{
 use sqlx::postgres::PgPoolOptions;
 use std::{collections::HashSet, fs::File, boxed::Box};
 use typemap::types::*;
+use libloading::os::unix::{Library, Symbol};
 
 // ---------------------------------
 // Initialization code & Entry point
@@ -113,14 +114,14 @@ async fn main() {
         .on_dispatch_error(client::hooks::dispatch_error)
         .after(client::hooks::after);
     
-    let libs: &mut Vec<libloading::Library> = Box::leak(Box::new(Vec::new()));
+    let libs: &mut Vec<Library> = Box::leak(Box::new(Vec::new()));
     let groups: &mut Vec<&CommandGroup> = Box::leak(Box::new(Vec::new()));
 
     for path in std::fs::read_dir("groups").unwrap() {
         let path = path.unwrap();
         unsafe {
-            let lib = libloading::Library::new(path.path()).unwrap();
-            let func: libloading::Symbol<unsafe extern fn() -> &'static CommandGroup> = lib.get(b"get_group").unwrap();
+            let lib = Library::new(path.path()).unwrap();
+            let func: Symbol<unsafe extern fn() -> &'static CommandGroup> = lib.get_singlethreaded(b"setup").unwrap();
             let symbol = func();
             libs.push(lib);
             groups.push(symbol);

@@ -11,3 +11,5 @@ crate-type = ["dylib"]
 
 [dependencies]
 serenity = { path = "../../../serenity", features = ["standard_framework", "framework"] }
+tokio = { version = "1.14", features = ["macros", "rt-multi-thread"]}
+tokio-global = "0.4.0"
