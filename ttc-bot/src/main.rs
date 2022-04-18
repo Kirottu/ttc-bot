@@ -19,7 +19,7 @@ mod utils {
     pub mod macros;
 }
 mod events {
-    pub mod conveyance;
+    //pub mod conveyance;
     //pub mod interactions;
     pub mod listener;
 }
@@ -27,7 +27,6 @@ mod client {
     pub mod event_handler;
     //    pub mod hooks;
 }
-mod types;
 
 // ----------------------
 // Imports from libraries
@@ -36,14 +35,16 @@ mod types;
 use clap::{App, Arg};
 use futures::stream::StreamExt;
 use poise::serenity_prelude::GatewayIntents;
+use poise::Command;
 use regex::Regex;
 use serde_yaml::Value;
 use signal_hook::consts::TERM_SIGNALS;
 use signal_hook_tokio::Signals;
 use sqlx::postgres::PgPoolOptions;
 use std::io::Read;
+use std::sync::Mutex;
 use std::{collections::HashSet, fs::File, sync::Arc};
-use tokio::sync::Mutex;
+use ttc_bot_common::*;
 use types::{Context, Data, Error};
 //use typemap::types::*;
 // ------------
@@ -259,6 +260,16 @@ async fn main() {
 
     log::info!("Got here");
 
+    let mut pong_command = unsafe {
+        let lib = libloading::Library::new(std::env::var("TEST_COMMAND").unwrap()).unwrap();
+        let f = lib
+            .get::<fn() -> Command<Data, Error>>("setup".as_bytes())
+            .unwrap();
+        f()
+    };
+
+    pong_command.name = "pong";
+
     poise::Framework::build()
         .token(token)
         .client_settings(move |client| {
@@ -273,7 +284,7 @@ async fn main() {
                 log::info!("Ready I guess?");
                 log::info!("{:?}", ready);
                 Ok(Data {
-                    users_currently_questioned: Vec::new(),
+                    users_currently_questioned: Mutex::new(Vec::new()),
                     pool: pool,
                     thread_name_regex: Regex::new("[^a-zA-Z0-9 ]").unwrap(),
                 })
@@ -285,6 +296,7 @@ async fn main() {
                 groups::admin::register(),
                 groups::general::ping(),
                 groups::localisation::translate(),
+                pong_command,
             ],
             prefix_options: poise::PrefixFrameworkOptions {
                 prefix: Some("!".to_string()),
@@ -305,7 +317,7 @@ async fn main() {
     log::info!("Bot shut down");
 }
 
-async fn signal_hook_task(
+/*async fn signal_hook_task(
     mut signals: Signals,
     shard_mgr: Arc<Mutex<poise::serenity_prelude::ShardManager>>,
 ) {
@@ -314,4 +326,4 @@ async fn signal_hook_task(
         shard_mgr.lock().await.shutdown_all().await;
         break;
     }
-}
+}*/

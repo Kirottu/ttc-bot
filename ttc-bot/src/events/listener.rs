@@ -1,4 +1,4 @@
-use poise::{serenity_prelude::Context, BoxFuture, Event, Framework};
+use poise::{serenity_prelude::Context, Event, Framework};
 
 use crate::types::{Data, Error};
 
@@ -9,9 +9,9 @@ pub async fn listener(
     data: &Data,
 ) -> Result<(), Error> {
     match event {
-        Event::Message { new_message: msg } => {
+        /*Event::Message { new_message: msg } => {
             crate::events::conveyance::message(ctx, &data.pool, msg).await;
-        }
+        }*/
         _ => (),
     }
 

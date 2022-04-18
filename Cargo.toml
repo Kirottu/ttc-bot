@@ -1,8 +1,5 @@
 [workspace]
-members = [
-    "ttc-bot",
-    "xtask",
-]
+members = ["ttc-bot", "xtask", "test-command", "ttc-bot-common"]
 
 [profile.release]
 lto = "fat"
