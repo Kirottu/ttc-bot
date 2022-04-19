@@ -269,6 +269,7 @@ async fn main() {
     };
 
     pong_command.name = "pong";
+    pong_command = pong_command.clone();
 
     poise::Framework::build()
         .token(token)
