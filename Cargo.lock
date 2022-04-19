@@ -203,7 +203,7 @@ dependencies = [
  "num-integer",
  "num-traits",
  "serde",
- "time",
+ "time 0.1.43",
  "winapi",
 ]
 
@@ -1202,6 +1202,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "num_threads"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aba1801fb138d8e85e11d0fc70baf4fe1cdfffda7c6cd34a854905df588e5ed0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "once_cell"
 version = "1.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1347,6 +1356,23 @@ checksum = "1df8c4ec4b0627e53bdf214615ad287367e482558cf84b109250b37464dc03ae"
 [[package]]
 name = "poise"
 version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "derivative",
+ "futures",
+ "futures-core",
+ "futures-util",
+ "log",
+ "once_cell",
+ "poise_macros 0.1.0",
+ "regex",
+ "serenity 0.10.10 (git+https://github.com/serenity-rs/serenity?rev=2bb9a01bfccd0485ccb7e9f20cce8edff7426eb3)",
+ "tokio",
+]
+
+[[package]]
+name = "poise"
+version = "0.1.0"
 source = "git+https://github.com/kangalioo/poise#1b046e56e9bab38333e458b25c7f6858341184a4"
 dependencies = [
  "async-trait",
@@ -1355,10 +1381,20 @@ dependencies = [
  "futures-util",
  "log",
  "once_cell",
- "poise_macros",
+ "poise_macros 0.1.0 (git+https://github.com/kangalioo/poise)",
  "regex",
- "serenity",
+ "serenity 0.10.10 (git+https://github.com/serenity-rs/serenity?branch=next)",
  "tokio",
+]
+
+[[package]]
+name = "poise_macros"
+version = "0.1.0"
+dependencies = [
+ "darling",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -1787,6 +1823,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "serenity"
+version = "0.10.10"
+source = "git+https://github.com/serenity-rs/serenity?rev=2bb9a01bfccd0485ccb7e9f20cce8edff7426eb3#2bb9a01bfccd0485ccb7e9f20cce8edff7426eb3"
+dependencies = [
+ "async-trait",
+ "async-tungstenite",
+ "base64",
+ "bitflags",
+ "bytes",
+ "cfg-if 1.0.0",
+ "chrono",
+ "dashmap",
+ "flate2",
+ "futures",
+ "mime",
+ "mime_guess",
+ "parking_lot 0.12.0",
+ "percent-encoding",
+ "reqwest",
+ "serde",
+ "serde-value",
+ "serde_json",
+ "time 0.3.9",
+ "tokio",
+ "tracing",
+ "typemap_rev",
+ "url",
+]
+
+[[package]]
 name = "sha-1"
 version = "0.9.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2080,7 +2146,7 @@ dependencies = [
 name = "test-command"
 version = "0.1.0"
 dependencies = [
- "poise",
+ "poise 0.1.0",
  "ttc-bot-common",
 ]
 
@@ -2121,6 +2187,18 @@ checksum = "ca8a50ef2360fbd1eeb0ecd46795a87a19024eb4b53c5dc916ca1fd95fe62438"
 dependencies = [
  "libc",
  "winapi",
+]
+
+[[package]]
+name = "time"
+version = "0.3.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c2702e08a7a860f005826c6815dcac101b19b5eb330c27fe4a5928fec1d20ddd"
+dependencies = [
+ "itoa",
+ "libc",
+ "num_threads",
+ "serde",
 ]
 
 [[package]]
@@ -2305,7 +2383,7 @@ dependencies = [
  "libloading",
  "log",
  "parse_duration",
- "poise",
+ "poise 0.1.0 (git+https://github.com/kangalioo/poise)",
  "rand",
  "regex",
  "reqwest",
@@ -2324,7 +2402,7 @@ name = "ttc-bot-common"
 version = "0.1.0"
 dependencies = [
  "log",
- "poise",
+ "poise 0.1.0 (git+https://github.com/kangalioo/poise)",
  "regex",
  "sqlx",
 ]

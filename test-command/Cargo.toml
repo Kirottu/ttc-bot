@@ -10,4 +10,5 @@ crate-type = ["cdylib"]
 
 [dependencies]
 ttc-bot-common = { path = "../ttc-bot-common" }
-poise = { git = "https://github.com/kangalioo/poise" }
+poise = { path = "../poise" }
+#poise = { git = "https://github.com/kangalioo/poise" }
