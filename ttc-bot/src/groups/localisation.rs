@@ -128,7 +128,7 @@ pub async fn translate(
             break;
         } else if lang_code.1.to_lowercase() == lang.to_lowercase() {
             language_found = true;
-            lang = lang_code.0.to_string();
+            //lang = lang_code.0.to_string();
             break;
         }
     }

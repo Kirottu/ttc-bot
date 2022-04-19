@@ -39,6 +39,7 @@ signal-hook = "0.3"
 futures = "0.3"
 parse_duration = "2.1.1"
 reqwest = "0.11"
-poise = { git = "https://github.com/kangalioo/poise" }
+#poise = { git = "https://github.com/kangalioo/poise" }
+poise = { path = "../poise" }
 ttc-bot-common = { path = "../ttc-bot-common" }
 libloading = "*"

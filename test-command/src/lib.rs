@@ -13,5 +13,5 @@ fn setup() -> Command<Data, Error> {
 async fn pong(ctx: Context<'_>) -> Result<(), Error> {
     ctx.say("pong").await?;
 
-    Ok::<(), Error>(())
+    Ok(())
 }

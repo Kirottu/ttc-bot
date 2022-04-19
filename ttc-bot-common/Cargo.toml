@@ -8,7 +8,8 @@ edition = "2021"
 [dependencies]
 regex = "1.5.4"
 log = { version = "0.4.14", features = ["std"] }
-poise = { git = "https://github.com/kangalioo/poise" }
+#poise = { git = "https://github.com/kangalioo/poise" }
+poise = { path = "../poise" }
 sqlx = { version = "0.5.9", features = [
     "runtime-tokio-rustls",
     "postgres",

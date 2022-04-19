@@ -272,13 +272,12 @@ async fn main() {
 
     poise::Framework::build()
         .token(token)
-        .client_settings(move |client| {
-            client.application_id(application_id).intents(
-                GatewayIntents::non_privileged()
-                    | GatewayIntents::GUILD_MEMBERS
-                    | GatewayIntents::MESSAGE_CONTENT,
-            )
-        })
+        .client_settings(move |client| client.application_id(application_id))
+        .intents(
+            GatewayIntents::non_privileged()
+                | GatewayIntents::GUILD_MEMBERS
+                | GatewayIntents::MESSAGE_CONTENT,
+        )
         .user_data_setup(move |ctx, ready, framework| {
             Box::pin(async move {
                 log::info!("Ready I guess?");
